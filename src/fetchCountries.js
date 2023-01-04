@@ -1,5 +1,5 @@
 
-export default function fetchCountries(name) {
+// export default function fetchCountries(name) {
 //    return fetch('https://restcountries.com/v3.1/name/united')
 //      .then(response => {
 //        return response.json();
@@ -10,4 +10,4 @@ export default function fetchCountries(name) {
 //      .catch(error => {
 //        console.log(error);
 //      });
-};
+// };

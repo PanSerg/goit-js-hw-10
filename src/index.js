@@ -1,14 +1,15 @@
 import './css/styles.css';
+import debounce from 'lodash.debounce';
 import countryBase from './fetchCountries';
 console.log(countryBase);
 
-const refs = {
-  form: document.querySelector('#search-box'),
-  itemContainer: document.querySelector('.country-list'),
-};
+const countryName = document.querySelector('#search-box');
+const countryContainer = document.querySelector('.country-list');
+const countryInfo = document.querySelector('.country-info');
 
 const DEBOUNCE_DELAY = 300;
-fetch('https://restcountries.com/v3.1/name/united')
+
+fetch('https://restcountries.com/v2/all')
   .then(response => {
     return response.json();
   })
@@ -19,14 +20,31 @@ fetch('https://restcountries.com/v3.1/name/united')
     console.log(error);
   });
 
-refs.form.addEventListener('input', onInput);
+  
+countryName.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 
 function onInput(evt) {
-    evt.preventDefault();
-    const { capital, population, languages,flags} = evt.currentTarget;
-    console.log(capital.value, population.value, languages.value, flags.value)
-        .then(data = console.log(data))
-        .catch(error = console.log(error));
+  evt.preventDefault();
+  
+    const name = countryName.ariaValueMax.trim();
+  if (name === '') {
+      return (countryContainer.innerHTML = ''), (countryInfo.innerHTML = '')
+  }
+  
+  fetchCountries(name)
+    .then(countries => {
+      countryContainer.innerHTML = '';
+      countryInfo.innerHTML = '';
+      if ((countries.length = 1)) {
+        countryContainer.insertAdjacentHTML('beforeend');
+        countryInfo.insertAdjacentHTML('beforeend');
+      } else if (countries.length >= 10) {
+        alertTooManyMatchesFound();
+      } else {
+        countryContainer.insertAdjacentHTML('beforeend');
+      }
+    }).catch(alertWrongName);
 };
+
 
 
