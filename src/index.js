@@ -16,15 +16,21 @@ function onInput(evt) {
   
     const name = countryName.value.trim();
   if (name === '') {
-    return (countryContainer.innerHTML = ''), (countryInfo.innerHTML = '');
+    return;
+    // return (countryContainer.innerHTML = ''), (countryInfo.innerHTML = '');
+  }
+
+  function clearMarkup() {
+    countryContainer.innerHTML = '';
+    countryInfo.innerHTML = '';
   }
   
   fetchCountries(name)
-    .then(countries => {
-      countryContainer.innerHTML = '';
-      countryInfo.innerHTML = '';
+    .then(countries => { (clearMarkup())
+      // countryContainer.innerHTML = '';
+      // countryInfo.innerHTML = '';
       if ((countries.length === 1)) {
-        countryContainer.insertAdjacentHTML('beforeend', renderCountryContainer(countries))
+        // countryContainer.insertAdjacentHTML('beforeend', renderCountryContainer(countries))
         countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries))
       } else if (countries.length >= 10) {
         alertTooManyMatchesFound();
