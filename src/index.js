@@ -14,23 +14,16 @@ countryName.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
 function onInput(evt) {
   evt.preventDefault();
   
-    const name = countryName.value.trim();
+  const name = countryName.value.trim();
+  clearMarkup();
   if (name === '') {
     return;
-    // return (countryContainer.innerHTML = ''), (countryInfo.innerHTML = '');
   }
 
-  function clearMarkup() {
-    countryContainer.innerHTML = '';
-    countryInfo.innerHTML = '';
-  }
-  
   fetchCountries(name)
-    .then(countries => { (clearMarkup())
-      // countryContainer.innerHTML = '';
-      // countryInfo.innerHTML = '';
+    .then(countries => {
+
       if ((countries.length === 1)) {
-        // countryContainer.insertAdjacentHTML('beforeend', renderCountryContainer(countries))
         countryInfo.insertAdjacentHTML('beforeend', renderCountryInfo(countries))
       } else if (countries.length >= 10) {
         alertTooManyMatchesFound();
@@ -39,6 +32,11 @@ function onInput(evt) {
       }
     }).catch(alertWrongName);
 }
+
+ function clearMarkup() {
+   countryContainer.innerHTML = '';
+   countryInfo.innerHTML = '';
+ }
 
 function renderCountryContainer(countries) {
   const markup = countries.map(({ name, flags }) => {
@@ -51,13 +49,21 @@ function renderCountryContainer(countries) {
 }
 
 function renderCountryInfo(countries) {
-  const markup = countries.map(({ capital, population, languages }) => {
-    return `<ul class="country-info__list">
+  const markup = countries
+    .map(({ name, flags, capital, population, languages }) => {
+      return `<ul class="country-info__list">
+    <li class="country-list__item">
+        <img class="country-list__flag" src="${flags.svg}" alt="Flag of ${name.official}" width = 30px height = 30px>
+        <h2 class="country-info__name">${name.official}</h2>
+    </li>
     <li class="country-info__item"><p><b>Capital: </b>${capital}</p></li>
     <li class="country-info__item"><p><b>Population: </b>${population}</p></li>
-    <li class="country-info__item"><p><b>Languages: </b>${Object.values(languages).join(', ')}</p></li>
-    </ul>`
-  }).join('')
+    <li class="country-info__item"><p><b>Languages: </b>${Object.values(
+      languages
+    ).join(', ')}</p></li>
+    </ul>`;
+    })
+    .join('');
   return markup
 }
 
