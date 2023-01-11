@@ -44,8 +44,8 @@ function renderCountryContainer(countries) {
               <img class="country-list__flag" src="${flags.svg}" alt="Flag of ${name.official}" width = 30px height = 30px>
               <h2 class="country-info__name">${name.official}</h2>
             </li>`
-}).join('')
-  return markup
+  }).join('');
+  return markup;
 }
 
 function renderCountryInfo(countries) {
@@ -58,13 +58,10 @@ function renderCountryInfo(countries) {
     </li>
     <li class="country-info__item"><p><b>Capital: </b>${capital}</p></li>
     <li class="country-info__item"><p><b>Population: </b>${population}</p></li>
-    <li class="country-info__item"><p><b>Languages: </b>${Object.values(
-      languages
-    ).join(', ')}</p></li>
+    <li class="country-info__item"><p><b>Languages: </b>${Object.values(languages).join(', ')}</p></li>
     </ul>`;
-    })
-    .join('');
-  return markup
+    }).join('');
+  return markup;
 }
 
 function alertWrongName() {
